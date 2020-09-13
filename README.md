@@ -1,4 +1,4 @@
-# Clamwin DB downloader.
+# Clamwin DB downloader
 
 Downloads the clamwin DB, and extracts main.cvd from it.
 

@@ -2,7 +2,7 @@
 
 Downloads the clamwin DB, and extracts main.cvd from it.
 
-Example usage
+## Usage
 
 ```golang
 package main
@@ -23,3 +23,8 @@ func main() {
 	}
 }
 ```
+
+
+## License
+
+Please note, clamwin DB is GNU GENERAL PUBLIC LICENSE, Version 3, and thus you cannot use this code in any commercial software.

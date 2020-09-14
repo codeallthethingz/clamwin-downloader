@@ -11,6 +11,9 @@ import (
 	"strings"
 )
 
+// Alternate format in hsb files
+var hsbLine, _ = regexp.Compile(`\b([^:]+):([0-9]+):`)
+
 func NewClamwinConnector() *ClamwinConnector {
 	return &ClamwinConnector{
 		GetClamwinStream: func() (io.ReadCloser, error) {
@@ -54,13 +57,12 @@ type ClamwinNormalizer struct {
 }
 
 func (w *ClamwinNormalizer) Write(p []byte) (n int, err error) {
-	regex, _ := regexp.Compile(`\b([^:]+):([0-9]+):`)
 	content := string(p)
 	lastReturn := strings.LastIndex(content, "\n")
 	lines := strings.Split(w.DanglingBit+content[0:lastReturn], "\n")
 	newContent := ""
 	for _, line := range lines {
-		newContent += regex.ReplaceAllString(line, "$2:$1:") + "\n"
+		newContent += hsbLine.ReplaceAllString(line, "$2:$1:") + "\n"
 	}
 	w.DanglingBit = content[lastReturn+1:]
 	_, err = w.Out.Write([]byte(newContent))

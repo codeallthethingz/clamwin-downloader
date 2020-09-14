@@ -87,14 +87,7 @@ func (c *ClamwinConnector) ExtractMainMDB(gzipStream io.Reader, out io.Writer) e
 		}
 		switch header.Typeflag {
 		case tar.TypeReg:
-			if header.Name == "main.mdb" {
-				fmt.Println("\n" + header.Name)
-				if _, err := io.CopyBuffer(out, tarReader, buf); err != nil {
-					return err
-				}
-				count++
-			} else if header.Name == "main.hsb" {
-				fmt.Println("\n" + header.Name)
+			if header.Name == "main.mdb" || header.Name == "main.hsb" || header.Name == "main.hdb" {
 				if _, err := io.CopyBuffer(out, tarReader, buf); err != nil {
 					return err
 				}
@@ -102,8 +95,8 @@ func (c *ClamwinConnector) ExtractMainMDB(gzipStream io.Reader, out io.Writer) e
 			}
 		}
 	}
-	if count == 2 {
+	if count == 3 {
 		return nil
 	}
-	return fmt.Errorf("didn't find main.mdb and/or main.hsb in this tar.gz")
+	return fmt.Errorf("didn't find main.mdb and/or main.hsb and/or main.hdb in this tar.gz")
 }

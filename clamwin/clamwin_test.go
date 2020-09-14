@@ -15,12 +15,15 @@ func TestDownload(t *testing.T) {
 		GetClamwinStream: func() (io.ReadCloser, error) {
 			return os.Open("test.cvd")
 		},
+		BufferSize: 100,
 	}
 	buf := new(bytes.Buffer)
 	err := tcwc.Download(buf)
 	require.NoError(t, err)
 	lines := strings.Split(strings.TrimSpace(buf.String()), "\n")
-	require.Len(t, lines, 10)
+	require.Len(t, lines, 20)
+	require.Contains(t, buf.String(), "45056:3ea7d00dedd30bcdf46191358c36ffa4:Win.Test.EICAR_MDB-1")
+	require.Contains(t, buf.String(), "22016:9f8ab04e0302e3436f5b8ceb6d98abc8:Win.Spyware.846-2")
 }
 
 func TestBadStream(t *testing.T) {
